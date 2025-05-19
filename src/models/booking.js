@@ -6,14 +6,6 @@ const Train = require("./train");
 const Booking = db.define(
 	"Booking",
 	{
-		source: {
-			type: DataTypes.STRING,
-			allowNull: false,
-		},
-		destination: {
-			type: DataTypes.STRING,
-			allowNull: false,
-		},
 		status: {
 			type: DataTypes.ENUM("booked", "cancelled"),
 			defaultValue: "booked",
