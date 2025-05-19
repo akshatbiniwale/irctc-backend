@@ -109,6 +109,12 @@ Server will start on: `http://localhost:3000`
 
 ## 📌 Headers
 
+* **Admin API Key**:
+
+  ```
+  x-api-key: your_admin_api_key
+  ```
+
 * **User Auth Token**:
 
   ```
