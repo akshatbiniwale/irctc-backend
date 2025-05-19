@@ -24,6 +24,10 @@ const Train = db.define(
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
+		adminId: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
+		},
 	},
 	{
 		timestamps: true,

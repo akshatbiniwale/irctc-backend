@@ -7,14 +7,15 @@ const {
 	getAllTrains,
 } = require("../controllers/trainController");
 const { isAdmin } = require("../middleware/roleMiddleware");
+const { verifyToken } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-router.post("/add", isAdmin, addTrain);
+router.post("/add", verifyToken, isAdmin, addTrain);
 
-router.put("/update/:id", isAdmin, updateTrain);
+router.put("/update/:id", verifyToken, isAdmin, updateTrain);
 
-router.delete("/delete/:id", isAdmin, deleteTrain);
+router.delete("/delete/:id", verifyToken, isAdmin, deleteTrain);
 
 router.get("/available", getAvailableTrains);
 router.get("/all", getAllTrains);

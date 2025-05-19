@@ -1,40 +1,42 @@
 const Train = require("../models/train");
 
 const addTrain = async (req, res) => {
-	try {
-		const { name, source, destination, totalSeats } = req.body;
+    try {
+        const { name, source, destination, totalSeats } = req.body;
+        const adminId = req.user.id;
 
-		if (!name || !source || !destination || !totalSeats) {
-			return res
-				.status(400)
-				.json({ message: "All fields are required." });
-		}
+        if (!name || !source || !destination || !totalSeats) {
+            return res
+                .status(400)
+                .json({ message: "All fields are required." });
+        }
 
-		const train = await Train.create({
-			name,
-			source,
-			destination,
-			totalSeats,
-			availableSeats: totalSeats,
-		});
+        const train = await Train.create({
+            name,
+            source,
+            destination,
+            totalSeats,
+            availableSeats: totalSeats,
+            adminId,
+        });
 
-		res.status(201).json({ message: "Train added successfully.", train });
-	} catch (error) {
-		console.error(error);
-		res.status(500).json({ message: "Server error", error: error.message });
-	}
+        res.status(201).json({ message: "Train added successfully.", train });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
 };
 
 const updateTrain = async (req, res) => {
-	try {
-		const { id } = req.params;
-		const { name, source, destination, totalSeats, availableSeats } =
-			req.body;
+    try {
+        const { id } = req.params;
+        const { name, source, destination, totalSeats, availableSeats } = req.body;
+        const adminId = req.user.id;
 
-		const train = await Train.findByPk(id);
-		if (!train) {
-			return res.status(404).json({ message: "Train not found." });
-		}
+        const train = await Train.findByPk(id);
+        if (!train) {
+            return res.status(404).json({ message: "Train not found." });
+        }
 
 		if (name !== undefined) train.name = name;
 		if (source !== undefined) train.source = source;
@@ -42,31 +44,36 @@ const updateTrain = async (req, res) => {
 		if (totalSeats !== undefined) train.totalSeats = totalSeats;
 		if (availableSeats !== undefined) train.availableSeats = availableSeats;
 
-		await train.save();
+        await train.save();
 
-		res.status(200).json({ message: "Train updated successfully.", train });
-	} catch (error) {
-		console.error(error);
-		res.status(500).json({ message: "Server error", error: error.message });
-	}
+        res.status(200).json({ message: "Train updated successfully.", train });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
 };
 
 const deleteTrain = async (req, res) => {
-	try {
-		const { id } = req.params;
+    try {
+        const { id } = req.params;
+        const adminId = req.user.id;
 
-		const train = await Train.findByPk(id);
-		if (!train) {
-			return res.status(404).json({ message: "Train not found." });
-		}
+        const train = await Train.findByPk(id);
+        if (!train) {
+            return res.status(404).json({ message: "Train not found." });
+        }
 
-		await train.destroy();
+        if (train.adminId !== adminId) {
+            return res.status(403).json({ message: "Not authorized to delete this train." });
+        }
 
-		res.status(200).json({ message: "Train deleted successfully." });
-	} catch (error) {
-		console.error(error);
-		res.status(500).json({ message: "Server error", error: error.message });
-	}
+        await train.destroy();
+
+        res.status(200).json({ message: "Train deleted successfully." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
 };
 
 const getAvailableTrains = async (req, res) => {
