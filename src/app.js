@@ -3,6 +3,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const db = require("./config/db");
 
+const authRoutes = require("./routes/authRoutes");
+const trainRoutes = require("./routes/trainRoutes");
+const userRoutes = require("./routes/userRoutes");
+const bookingRoutes = require("./routes/bookingRoutes");
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -19,6 +24,11 @@ db.authenticate()
 		console.error("Database connection failed:", err);
 		process.exit(1);
 	});
+
+app.use("/api/auth", authRoutes);
+app.use("/api/trains", trainRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/bookings", bookingRoutes);
 
 const PORT = process.env.PORT || 3000;
 
