@@ -3,20 +3,26 @@ const db = require("../config/db");
 const User = require("./user");
 const Train = require("./train");
 
-const Booking = db.define("Booking", {
-	source: {
-		type: DataTypes.STRING,
-		allowNull: false,
+const Booking = db.define(
+	"Booking",
+	{
+		source: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		},
+		destination: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		},
+		status: {
+			type: DataTypes.ENUM("booked", "cancelled"),
+			defaultValue: "booked",
+		},
 	},
-	destination: {
-		type: DataTypes.STRING,
-		allowNull: false,
-	},
-	status: {
-		type: DataTypes.ENUM("booked", "cancelled"),
-		defaultValue: "booked",
-	},
-});
+	{
+		timestamps: true,
+	}
+);
 
 User.hasMany(Booking, { foreignKey: "userId" });
 Booking.belongsTo(User, { foreignKey: "userId" });
