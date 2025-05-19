@@ -1,4 +1,6 @@
-const { Booking, Train, sequelize } = require("../models");
+const Booking = require("../models/booking");
+const Train = require("../models/train");
+const sequelize = require("../config/db");
 
 const bookSeat = async (req, res) => {
 	const userId = req.user.id;

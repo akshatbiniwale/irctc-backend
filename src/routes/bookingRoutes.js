@@ -3,11 +3,11 @@ const {
 	bookSeat,
 	getBookingDetails,
 } = require("../controllers/bookingController");
-const { authenticateToken } = require("../middlewares/authMiddleware");
+const { verifyToken } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-router.post("/book", authenticateToken, bookSeat);
-router.get("/:bookingId", authenticateToken, getBookingDetails);
+router.post("/book", verifyToken, bookSeat);
+router.get("/:bookingId", verifyToken, getBookingDetails);
 
 module.exports = router;

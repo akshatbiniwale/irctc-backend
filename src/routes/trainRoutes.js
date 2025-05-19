@@ -1,14 +1,22 @@
 const express = require("express");
 const {
 	addTrain,
-	getSeatAvailability,
+	updateTrain,
+	deleteTrain,
+	getAvailableTrains,
+	getAllTrains,
 } = require("../controllers/trainController");
-const { adminApiKeyMiddleware } = require("../middlewares/adminMiddleware");
+const { isAdmin } = require("../middleware/roleMiddleware");
 
 const router = express.Router();
 
-router.post("/add", adminApiKeyMiddleware, addTrain);
+router.post("/add", isAdmin, addTrain);
 
-router.get("/availability", getSeatAvailability);
+router.put("/update/:id", isAdmin, updateTrain);
+
+router.delete("/delete/:id", isAdmin, deleteTrain);
+
+router.get("/available", getAvailableTrains);
+router.get("/all", getAllTrains);
 
 module.exports = router;

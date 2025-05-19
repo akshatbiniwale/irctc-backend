@@ -5,7 +5,6 @@ const db = require("./config/db");
 
 const authRoutes = require("./routes/authRoutes");
 const trainRoutes = require("./routes/trainRoutes");
-const userRoutes = require("./routes/userRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
 
 const app = express();
@@ -27,7 +26,6 @@ db.authenticate()
 
 app.use("/api/auth", authRoutes);
 app.use("/api/trains", trainRoutes);
-app.use("/api/users", userRoutes);
 app.use("/api/bookings", bookingRoutes);
 
 const PORT = process.env.PORT || 3000;
