@@ -12,14 +12,12 @@ This is a simplified IRCTC-like railway management system built using Node.js, E
 │   └── db.js
 ├── controllers
 │   ├── authController.js
-│   ├── userController.js
 │   ├── trainController.js
 │   └── bookingController.js
 ├── middleware
-│   ├── authenticate.js
-│   └── authorizeAdmin.js
+│   ├── authMiddleware.js
+│   └── roleMiddleware.js
 ├── models
-│   ├── index.js
 │   ├── user.js
 │   ├── train.js
 │   └── booking.js
@@ -64,7 +62,7 @@ JWT_SECRET=your_jwt_secret
 4. **Start the Server**
 
 ```bash
-node app.js
+npm run dev
 ```
 
 Server will start on: `http://localhost:3000`
@@ -82,28 +80,35 @@ Server will start on: `http://localhost:3000`
 
 ### Auth
 
-| Endpoint             | Method | Description         |
-| -------------------- | ------ | ------------------- |
-| `/api/auth/register` | POST   | Register a new user |
-| `/api/auth/login`    | POST   | Log in a user       |
+| Endpoint             | Method | Description                 |
+|----------------------|--------|-----------------------------|
+| `/api/auth/register` | POST   | Register a new user / admin |
+| `/api/auth/login`    | POST   | Log in a user / admin       |
 
-### Train (Admin Only, bearer token for authorization)
+### Train
 
-| Endpoint          | Method | Description        |
-| ----------------- | ------ | ------------------ |
-| `/api/trains`     | POST   | Create a new train |
-| `/api/trains/:id` | PUT    | Update a train     |
-| `/api/trains/:id` | DELETE | Delete a train     |
-| `/api/trains`     | GET    | Get all trains     |
-| `/api/trains/:id` | GET    | Get train by ID    |
+| Endpoint                                      | Method | Description          |
+|-----------------------------------------------|--------|----------------------|
+| `/api/trains/add`                             | POST   | Create a new train   |
+| `/api/trains/update/:id`                      | PUT    | Update a train       |
+| `/api/trains/delete/:id`                      | DELETE | Delete a train       |
+| `/api/trains/all`                             | GET    | Get all trains       |
+| `/api/trains/available?source=&destination=`  | GET    | Get available trains |
 
-### Booking (User, requires JWT in Authorization Header)
+### Booking
 
-| Endpoint                   | Method | Description                        |
-| -------------------------- | ------ | ---------------------------------- |
-| `/api/bookings/check`      | POST   | Check trains and seat availability |
-| `/api/bookings/book`       | POST   | Book a seat                        |
-| `/api/bookings/:bookingId` | GET    | Get specific booking details       |
+| Endpoint                          | Method | Description              |
+|----------------------------------|--------|---------------------------|
+| `/api/bookings/book/:trainId`    | POST   | Book a seat               |
+| `/api/bookings/cancel/:bookingId`| PUT    | Cancel a seat             |
+| `/api/bookings/all`              | GET    | Get all bookings          |
+| `/api/bookings/:bookingId`       | GET    | Get booking details       |
+
+### User
+
+| Endpoint                   | Method | Description       |
+|----------------------------|--------|-------------------|
+| `/api/bookings/history`    | GET    | Get my bookings   |
 
 ---
 
